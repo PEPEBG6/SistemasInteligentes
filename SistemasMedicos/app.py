@@ -18,6 +18,11 @@ def bienvenida():
   
   return render_template('bienvenida.html')
 
+@app.route('/pacientes.html')
+def pacientes():
+
+  return render_template('pacientes.html')
+
 
 
 
