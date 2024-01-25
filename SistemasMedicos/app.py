@@ -23,6 +23,14 @@ def pacientes():
 
   return render_template('pacientes.html')
 
+@app.route('/consulta.html')
+def consulta():
+  CC= mysql.connection.cursor();
+  CC.execute('select * from pacientes')
+  conpac= CC.fetchall()
+  print(conpac)
+  return render_template('consulta.html',listpac=conpac)
+
 
 
 
