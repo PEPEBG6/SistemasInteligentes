@@ -27,6 +27,28 @@ def pacientes():
 
 
 
+@app.route('/paciente',methods=['POST'])
+def paciente():
+  if request.method == 'POST':
+
+    
+    Vnombre=request.form['txtNombre']
+    Vap=request.form['txtAp']
+    Vam=request.form['txtAm']
+    Vcurp=request.form['txtCURP']
+    VfechaNac=request.form['txtFN']
+    
+
+    
+    cs= mysql.connection.cursor()
+    cs.execute('insert into pacientes (nombre,ap,am,curp,fecha_nac) values(%s,%s,%s,%s,%s)',(Vnombre,Vap,Vam,Vcurp,VfechaNac))
+    mysql.connection.commit()
+
+  flash('Se registro paciente')
+  return redirect(url_for('pacientes'))
+
+
+
 #Ejecucion del servidor en el puerto 5000
 if __name__ == '__main__':
   app.run(port=1000,debug=True)
