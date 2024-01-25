@@ -11,27 +11,69 @@
     
 </head>
 <body>
+
+    <header>
+        
+        <nav class="nav-bar">
+            <ul>
+                <li>
+                    <a href="/">Menu</a>
+                </li>
+                
+                
+            </ul>
+        </nav>
+    </header> 
+
+
+    {% with mensajes= get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong><h3> {{msj}}</h3></strong> 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <script>Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Good Job',
+                showConfirmButton: false,
+                timer: 1500
+                })</script>
+
+               
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <form action="/paciente" method="POST">
-        <div class="card container col-md-3 mt-5">
+
+        <div class="card container col-md-3 mt-3">
             <h2 class="text-center p-4">Pacientes</h2>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Nombre:</label>
-                <input type="text" id="nombre"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese el nombre" required>
+                <input type="text" name ="txtNombre"  class="form-control"  aria-describedby="emailHelp" placeholder="Ingrese el nombre" required>
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">pellido Paterno:</label>
-                <input type="text" id="apellidoPaterno"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese el apellido paterno" required>
+                <label for="exampleInputEmail1" class="form-label">Apellido Paterno:</label>
+                <input type="text" name ="txtAp"   class="form-control"  aria-describedby="emailHelp" placeholder="Ingrese el apellido paterno" required>
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">pellido Materno:</label>
-                <input type="text" id="apellidoPaterno"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ingersar apellido materno" required>
+                <label for="exampleInputEmail1" class="form-label">Apellido Materno:</label>
+                <input type="text" name ="txtAm"  class="form-control" aria-describedby="emailHelp" placeholder="ingersar apellido materno" required>
             </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">CURP:</label>
+                <input type="text" name ="txtCURP"  class="form-control"  aria-describedby="emailHelp" placeholder="CURP" required>
+            </div>  
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Fecha de Nacimiento:</label>
-                <input type="date" id="apellidoPaterno"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                <input type="date" name ="txtFN"  class="form-control"  aria-describedby="emailHelp" required>
             </div>  
             <div class="d-grid gap-2 m-2">
-                <button class="btn btn-outline-success" type="button"><i class="bi bi-floppy"></i> Guardar</button>
+                <button class="btn btn-outline-success" type="submit"><i class="bi bi-floppy"></i> Guardar</button>
                 <button class="btn btn-outline-danger" type="button">  <a href="/"> <i class="bi bi-x-circle-fill"></i>Cancelar</a></button>
             </div>     
             
