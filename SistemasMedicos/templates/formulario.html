@@ -93,7 +93,7 @@
                             value="si"
                             class="form-check-input"
                             onclick="mostrarResumen('covid-19')">
-                            
+
                         <label class="form-check-label" for="opcion1">Sí</label>
                     </div>
                     <div class="form-check">
@@ -236,27 +236,26 @@
                             onclick="mostrarResumen('Probablemente resfriado común')">
                         <label class="form-check-label" for="opcion2">No</label>
                     </div>
-                    
+
+                    <input type="text" name="txtconsultorio" id="txtconsultorio"
+                        class="form-control mt-7" hidden>
+                    <input type="text" name="txtenfermedad" id="txtenfermedad"
+                        class="form-control mt-7" hidden>
 
                 </div>
                 <!-- Resumen de selecciones -->
-            <div id="resumen" class="mt-4 hidden">
-                <h3 class="text-primary">Diagnóstico:</h3>
-                <h1 id="mensajeee" class="hidden text-danger"></h1>
-            </div>
+                <div id="resumen" class="mt-4 hidden">
+                    <h3 class="text-primary">Diagnóstico:</h3>
+                    <h1 id="mensajeee" class="hidden text-danger"></h1>
+                </div>
 
-            <input type="text" name="txtconsultorio" id="txtconsultorio" class="form-control mt-7" hidden>
-
-
-            <input type="text" name="txtenfermedad" id="txtenfermedad" class="form-control mt-7" hidden>
-                <button type="submit" id="boton" name="boton" class="boton hidden btn btn-primary mt-3">Enviar Sintomas</button>
+                <button type="submit" id="boton" name="boton"
+                    class="boton hidden btn btn-primary mt-3">Enviar
+                    Sintomas</button>
             </form>
 
-            
-            
         </div>
 
-        <!-- Agrega la biblioteca de Bootstrap y jQuery para el funcionamiento de los componentes -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -264,213 +263,182 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <script>
-          function mostrarPregunta(idPregunta) {
-      // Oculta todas las preguntas
-      var preguntas = document.getElementsByClassName('pregunta');
-      for (var i = 0; i < preguntas.length; i++) {
-        preguntas[i].classList.add('hidden');
-      }
+            var valorTxtenfermedad;
+            function mostrarPregunta(idPregunta) {
+            // Oculta todas las preguntas
+            var preguntas = document.getElementsByClassName("pregunta");
+            for (var i = 0; i < preguntas.length; i++) {
+                preguntas[i].classList.add("hidden");
+            }
 
+            // Muestra la siguiente pregunta según la respuesta seleccionada
+            var respuesta1 = document.querySelector('input[name="respuesta1"]:checked');
+            if (respuesta1) {
+                var siguientePregunta;
+                if (respuesta1.value === "si") {
+                txtpaciente.disabled = true;
+                siguientePregunta = document.getElementById("pregunta3");
+                } else if (respuesta1.value === "no") {
+                txtpaciente.disabled = true;
+                siguientePregunta = document.getElementById("pregunta2");
+                }
 
+                var respuesta2 = document.querySelector('input[name="respuesta2"]:checked');
+                if (respuesta2) {
+                if (respuesta2.value === "si") {
+                    siguientePregunta = document.getElementById("pregunta7");
+                } else if (respuesta2.value === "no") {
+                    siguientePregunta = document.getElementById("pregunta8");
+                }
+                }
 
+                var respuesta3 = document.querySelector('input[name="respuesta3"]:checked');
+                if (respuesta3) {
+                if (respuesta3.value === "si") {
+                    mostrarResumen("covid-19");
+                } else if (respuesta3.value === "no") {
+                    siguientePregunta = document.getElementById("pregunta4");
+                }
+                }
 
+                var respuesta4 = document.querySelector('input[name="respuesta4"]:checked');
+                if (respuesta4) {
+                if (respuesta4.value === "si") {
+                    mostrarResumen("covid-19 Probablemente grave");
+                } else if (respuesta4.value === "no") {
+                    siguientePregunta = document.getElementById("pregunta5");
+                }
+                }
 
+                var respuesta5 = document.querySelector('input[name="respuesta5"]:checked');
+                if (respuesta5) {
+                if (respuesta5.value === "si") {
+                    mostrarResumen("posiblemente necesita atención");
+                } else if (respuesta5.value === "no") {
+                    siguientePregunta = document.getElementById("pregunta6");
+                }
+                }
 
+                var respuesta6 = document.querySelector('input[name="respuesta6"]:checked');
+                if (respuesta6) {
+                if (respuesta6.value === "si") {
+                    mostrarResumen("Influenza");
+                } else if (respuesta6.value === "no") {
+                    mostrarResumen("Gripe posiblemente leve");
+                }
+                }
 
+                var respuesta7 = document.querySelector('input[name="respuesta7"]:checked');
+                if (respuesta7) {
+                if (respuesta7.value === "si") {
+                    mostrarResumen("Probablemente necesita atención médica urgente");
+                } else if (respuesta7.value === "no") {
+                    mostrarResumen("Influenza posiblemente grave");
+                }
+                }
 
+                var respuesta8 = document.querySelector('input[name="respuesta8"]:checked');
+                if (respuesta8) {
+                if (respuesta8.value === "si") {
+                    siguientePregunta = document.getElementById("pregunta9");
+                } else if (respuesta8.value === "no") {
+                    mostrarResumen(
+                    "Probablemente otro tipo de enfermedad, consulte a otro especialista"
+                    );
+                }
+                }
 
+                var respuesta9 = document.querySelector('input[name="respuesta9"]:checked');
+                if (respuesta9) {
+                if (respuesta9.value === "si") {
+                    siguientePregunta = document.getElementById("pregunta10");
+                } else if (respuesta9.value === "no") {
+                    mostrarResumen("Probablemente covid-19 o Infección respiratoria");
+                }
+                }
 
+                var respuesta10 = document.querySelector(
+                'input[name="respuesta10"]:checked'
+                );
+                if (respuesta10) {
+                if (respuesta10.value === "si") {
+                    mostrarResumen("Probablemente gripe");
+                } else if (respuesta10.value === "no") {
+                    mostrarResumen("Probablemente resfriado común");
+                }
+                }
 
+                if (siguientePregunta) {
+                siguientePregunta.classList.remove("hidden");
+                }
+            }
+            }
+            
+            
+            // Función para mostrar el resumen de las selecciones
+            function mostrarResumen(mensaje) {
+            // Oculta todas las preguntas
+            var preguntas = document.getElementsByClassName("pregunta");
+            for (var i = 0; i < preguntas.length; i++) {
+                preguntas[i].classList.add("hidden");
+            }
+            var resumen = document.getElementById("resumen");
+            resumen.classList.remove("hidden");
+            txtpaciente.disabled = false;
+            txtpaciente.classList.add("hidden");
+            boton.classList.remove("hidden");
 
+            var mensajes = document.getElementById("mensajeee");
+            mensajes.classList.remove("hidden");
+            mensajes.textContent = mensaje;
+            }
 
-      // Muestra la siguiente pregunta según la respuesta seleccionada
-      var respuesta1 = document.querySelector('input[name="respuesta1"]:checked');
-      if (respuesta1) {
-        var siguientePregunta;
-        if (respuesta1.value === 'si') {
-          txtpaciente.disabled = true;
-          siguientePregunta = document.getElementById('pregunta3');
-        } else if (respuesta1.value === 'no') {
-            txtpaciente.disabled = true;
-            siguientePregunta = document.getElementById('pregunta2');
-        }
+            $(document).ready(function () {
+            $("#txtpaciente").change(function () {
+                // Obtener la fecha de nacimiento del paciente seleccionado
+                var fechaNacimiento = $(this).find(":selected").data("fecha-nacimiento");
 
-        var respuesta2 = document.querySelector('input[name="respuesta2"]:checked');
-        if (respuesta2) {
-          if (respuesta2.value === 'si') {
-            siguientePregunta = document.getElementById('pregunta7');
-          } else if (respuesta2.value === 'no') {
-            siguientePregunta = document.getElementById('pregunta8');
-          }
-        }
+                // Convertir la fecha de nacimiento a un objeto Date
+                var fechaNacimientoObj = new Date(fechaNacimiento);
 
-        var respuesta3 = document.querySelector('input[name="respuesta3"]:checked');
-        if (respuesta3) {
-          if (respuesta3.value === 'si') {
-            mostrarResumen('covid-19');
-            document.getElementById('txtenfermedad').value = '1';
-          } else if (respuesta3.value === 'no') {
-            siguientePregunta = document.getElementById('pregunta4');
-          }
-        }
+                // Calcular la edad del paciente
+                var hoy = new Date();
+                var edad = hoy.getFullYear() - fechaNacimientoObj.getFullYear();
 
-        var respuesta4 = document.querySelector('input[name="respuesta4"]:checked');
-        if (respuesta4) {
-          if (respuesta4.value === 'si') {
-            mostrarResumen('covid-19 Probablemente grave');
-            txtenfermedad.value = '1';
-          } else if (respuesta4.value === 'no') {
-            siguientePregunta = document.getElementById('pregunta5');
-          }
-        }
+                // Verificar si el cumpleaños ya pasó este año
+                var cumpleaniosEsteAnio =
+                hoy.getMonth() < fechaNacimientoObj.getMonth() ||
+                (hoy.getMonth() == fechaNacimientoObj.getMonth() &&
+                    hoy.getDate() < fechaNacimientoObj.getDate());
 
-        var respuesta5 = document.querySelector('input[name="respuesta5"]:checked');
-        if (respuesta5) {
-          if (respuesta5.value === 'si') {
-            mostrarResumen('posiblemente necesita atención');
-            txtenfermedad.value = '6';
-          } else if (respuesta5.value === 'no') {
-            siguientePregunta = document.getElementById('pregunta6');
-          }
-        }
-
-        var respuesta6 = document.querySelector('input[name="respuesta6"]:checked');
-        if (respuesta6) {
-          if (respuesta6.value === 'si') {
-            mostrarResumen('Influenza');
-            txtenfermedad.value = '2';
-          } else if (respuesta6.value === 'no') {
-            mostrarResumen('Gripe posiblemente leve');
-            txtenfermedad.value = '3';
-          }
-        }
-
-        var respuesta7 = document.querySelector('input[name="respuesta7"]:checked');
-        if (respuesta7) {
-          if (respuesta7.value === 'si') {
-            mostrarResumen('Probablemente necesita atención médica urgente');
-            txtenfermedad.value = '6';
-          } else if (respuesta7.value === 'no') {
-            mostrarResumen('Influenza posiblemente grave');
-            txtenfermedad.value = '2';
-          }
-        }
-
-        var respuesta8 = document.querySelector('input[name="respuesta8"]:checked');
-        if (respuesta8) {
-          if (respuesta8.value === 'si') {
-            siguientePregunta = document.getElementById('pregunta9');
-          } else if (respuesta8.value === 'no') {
-            mostrarResumen('Probablemente otro tipo de enfermedad, consulte a otro especialista');
-            txtenfermedad.value = '6';
-          }
-        }
-
-        var respuesta9 = document.querySelector('input[name="respuesta9"]:checked');
-        if (respuesta9) {
-          if (respuesta9.value === 'si') {
-            siguientePregunta = document.getElementById('pregunta10');
-          } else if (respuesta9.value === 'no') {
-            mostrarResumen('Probablemente covid-19 o Infección respiratoria');
-            txtenfermedad.value = '5';
-          }
-        }
-
-        var respuesta10 = document.querySelector('input[name="respuesta10"]:checked');
-        if (respuesta10) {
-          if (respuesta10.value === 'si') {
-            mostrarResumen('Probablemente gripe');
-            txtenfermedad.value = '3';
-          } else if (respuesta10.value === 'no') {
-            mostrarResumen('Probablemente resfriado común');
-            txtenfermedad.value = '4';
-          }
-        }
-
-
-        if (siguientePregunta) {
-          siguientePregunta.classList.remove('hidden');
-        }
-      }
-    }
-    // Función para mostrar el resumen de las selecciones
-    function mostrarResumen(mensaje) {
-        // Oculta todas las preguntas
-        var preguntas = document.getElementsByClassName('pregunta');
-        for (var i = 0; i < preguntas.length; i++) {
-          preguntas[i].classList.add('hidden');
-        }
-      var resumen = document.getElementById('resumen');
-      resumen.classList.remove('hidden');
-//sdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddas
-      txtpaciente.disabled = false;
-      //hacerlo hide el txt paciente
-
-      txtpaciente.classList.add('hidden');
-      boton.classList.remove('hidden');
-      
-
-
-      var mensajes = document.getElementById('mensajeee');
-        mensajes.classList.remove('hidden');
-        mensajes.textContent = mensaje;
-
-
-    }
-
-
-
-
-
-
-    $(document).ready(function() {
-        $('#txtpaciente').change(function() {
-            // Obtener la fecha de nacimiento del paciente seleccionado
-            var fechaNacimiento = $(this).find(':selected').data('fecha-nacimiento');
-
-            // Convertir la fecha de nacimiento a un objeto Date
-            var fechaNacimientoObj = new Date(fechaNacimiento);
-
-            // Calcular la edad del paciente
-            var hoy = new Date();
-            var edad = hoy.getFullYear() - fechaNacimientoObj.getFullYear();
-
-            // Verificar si el cumpleaños ya pasó este año
-            var cumpleaniosEsteAnio = hoy.getMonth() < fechaNacimientoObj.getMonth() || 
-                                      (hoy.getMonth() == fechaNacimientoObj.getMonth() && 
-                                       hoy.getDate() < fechaNacimientoObj.getDate());
-
-            // Restar 1 a la edad si el cumpleaños todavía no ha ocurrido este año
-            if (!cumpleaniosEsteAnio) {
+                // Restar 1 a la edad si el cumpleaños todavía no ha ocurrido este año
+                if (!cumpleaniosEsteAnio) {
                 edad--;
-            }
+                }
 
-            // Actualizar el H1 según la edad del paciente
-            var consultorioH1 = $('#consultorioH1');
-            if (edad < 18) {
-                pregunta1.classList.remove('hidden');
-                consultorioH1.text('Consultorio 1');
-                txtconsultorio.value = '1';
-            } else if (edad >= 18 && edad <= 45) {
-                pregunta1.classList.remove('hidden');
-                consultorioH1.text('Consultorio 2');
-                txtconsultorio.value = '2';
-            } else if (edad > 45){                
-                pregunta1.classList.remove('hidden');
-                consultorioH1.text('Consultorio 3');
-                txtconsultorio.value = '3';
-            }
-            else{
-                consultorioH1.text('No se puede determinar el consultorio');
-                pregunta1.classList.add('hidden');
+                // Actualizar el H1 según la edad del paciente
+                var consultorioH1 = $("#consultorioH1");
+                if (edad < 18) {
+                pregunta1.classList.remove("hidden");
+                consultorioH1.text("Consultorio 1");
+                txtconsultorio.value = "1";
+                } else if (edad >= 18 && edad <= 45) {
+                pregunta1.classList.remove("hidden");
+                consultorioH1.text("Consultorio 2");
+                txtconsultorio.value = "2";
+                } else if (edad > 45) {
+                pregunta1.classList.remove("hidden");
+                consultorioH1.text("Consultorio 3");
+                txtconsultorio.value = "3";
+                } else {
+                consultorioH1.text("No se puede determinar el consultorio");
+                pregunta1.classList.add("hidden");
+                }
+            });
+            });
 
-            }
-
-        });
-    });
-
-
-  </script>
+          
+        </script>
 
     </body>
 </html>
