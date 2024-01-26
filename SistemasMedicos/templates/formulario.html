@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario Sucesivo con Resumen</title>
+        <link rel="stylesheet" type="text/css" href="/public/Pacientes.css">
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Agrega la biblioteca de Bootstrap -->
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+    </head>
+    <body>
+        <header>
+
+            <nav class="nav-bar">
+                <ul>
+                    <li>
+                        <a href="/">Menu</a>
+                    </li>
+
+                </ul>
+            </nav>
+        </header>
+
+        <h1 id="consultorioH1"
+            class="mt-5 mb-4 text-center text-primary">Consultorio</h1>
+
+        <div class="container mt-5">
+            <form id="formulario" method="POST" action="/diagnostico"
+                class="border p-4">
+
+                <select class="form-control mt-7" name="txtCurp"
+                    id="txtpaciente">
+                    <option value>Seleccione un paciente</option>
+                    <!-- Opción adicional -->
+
+                    {% for paciente in listpacientes %}
+                    <option value="{{ paciente[0] }}"
+                        data-fecha-nacimiento="{{ paciente[1] }}">{{ paciente[0]
+                        }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Pregunta 1 -->
+                <div id="pregunta1" class="pregunta hidden">
+                    <label>¿Tiene dificultad para respirar?</label>
+                    <div class="form-check">
+                        <input type="radio" id="si" name="respuesta1" value="si"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta3')">
+                        <label class="form-check-label" for="si">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="no" name="respuesta1" value="no"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta2')">
+                        <label class="form-check-label" for="no">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div id="pregunta2" class="pregunta hidden">
+                    <label>¿dolor o presión en el pecho?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta2"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta7')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta2"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta8')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div id="pregunta3" class="pregunta hidden">
+                    <label>¿pérdida del olfato o gusto?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta3"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('covid-19')">
+                            
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta3"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta4')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div id="pregunta4" class="pregunta hidden">
+                    <label>¿siente dolor en el pecho?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta4"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('covid-19 Probablemente grave')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta4"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta5')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div id="pregunta5" class="pregunta hidden">
+                    <label>¿mareos persistentes o convulsiones?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta5"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('posiblemente necesita atención')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta5"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta6')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 6 -->
+                <div id="pregunta6" class="pregunta hidden">
+                    <label>¿presenta fiebre alta o persistente?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta6"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Influenza')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta6"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Gripe posiblemente leve')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 7 -->
+                <div id="pregunta7" class="pregunta hidden">
+                    <label>¿mareos persistentes o convulsiones?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta7"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Probablemente necesita atención médica urgente')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta7"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Influenza posiblemente grave')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 8 -->
+                <div id="pregunta8" class="pregunta hidden">
+                    <label>¿Tos persistente?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta8"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta9')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta8"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Probablemente otro tipo de enfermedad, consulte a otro especialista')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 9 -->
+                <div id="pregunta9" class="pregunta hidden">
+                    <label>¿dolor de garganta?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta9"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarPregunta('pregunta10')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta9"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Probablemente covid-19 o Infección respiratoria')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 10 -->
+                <div id="pregunta10" class="pregunta hidden">
+                    <label>¿Goteo de nariz?</label>
+                    <div class="form-check">
+                        <input type="radio" id="opcion1" name="respuesta10"
+                            value="si"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Probablemente gripe')">
+                        <label class="form-check-label" for="opcion1">Sí</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="opcion2" name="respuesta10"
+                            value="no"
+                            class="form-check-input"
+                            onclick="mostrarResumen('Probablemente resfriado común')">
+                        <label class="form-check-label" for="opcion2">No</label>
+                    </div>
+                    
+
+                </div>
+                <!-- Resumen de selecciones -->
+            <div id="resumen" class="mt-4 hidden">
+                <h3 class="text-primary">Diagnóstico:</h3>
+                <h1 id="mensajeee" class="hidden text-danger"></h1>
+            </div>
+
+            <input type="text" name="txtconsultorio" id="txtconsultorio" class="form-control mt-7" hidden>
+
+
+            <input type="text" name="txtenfermedad" id="txtenfermedad" class="form-control mt-7" hidden>
+                <button type="submit" id="boton" name="boton" class="boton hidden btn btn-primary mt-3">Enviar Sintomas</button>
+            </form>
+
+            
+            
+        </div>
+
+        <!-- Agrega la biblioteca de Bootstrap y jQuery para el funcionamiento de los componentes -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+          function mostrarPregunta(idPregunta) {
+      // Oculta todas las preguntas
+      var preguntas = document.getElementsByClassName('pregunta');
+      for (var i = 0; i < preguntas.length; i++) {
+        preguntas[i].classList.add('hidden');
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Muestra la siguiente pregunta según la respuesta seleccionada
+      var respuesta1 = document.querySelector('input[name="respuesta1"]:checked');
+      if (respuesta1) {
+        var siguientePregunta;
+        if (respuesta1.value === 'si') {
+          txtpaciente.disabled = true;
+          siguientePregunta = document.getElementById('pregunta3');
+        } else if (respuesta1.value === 'no') {
+            txtpaciente.disabled = true;
+            siguientePregunta = document.getElementById('pregunta2');
+        }
+
+        var respuesta2 = document.querySelector('input[name="respuesta2"]:checked');
+        if (respuesta2) {
+          if (respuesta2.value === 'si') {
+            siguientePregunta = document.getElementById('pregunta7');
+          } else if (respuesta2.value === 'no') {
+            siguientePregunta = document.getElementById('pregunta8');
+          }
+        }
+
+        var respuesta3 = document.querySelector('input[name="respuesta3"]:checked');
+        if (respuesta3) {
+          if (respuesta3.value === 'si') {
+            mostrarResumen('covid-19');
+            document.getElementById('txtenfermedad').value = '1';
+          } else if (respuesta3.value === 'no') {
+            siguientePregunta = document.getElementById('pregunta4');
+          }
+        }
+
+        var respuesta4 = document.querySelector('input[name="respuesta4"]:checked');
+        if (respuesta4) {
+          if (respuesta4.value === 'si') {
+            mostrarResumen('covid-19 Probablemente grave');
+            txtenfermedad.value = '1';
+          } else if (respuesta4.value === 'no') {
+            siguientePregunta = document.getElementById('pregunta5');
+          }
+        }
+
+        var respuesta5 = document.querySelector('input[name="respuesta5"]:checked');
+        if (respuesta5) {
+          if (respuesta5.value === 'si') {
+            mostrarResumen('posiblemente necesita atención');
+            txtenfermedad.value = '6';
+          } else if (respuesta5.value === 'no') {
+            siguientePregunta = document.getElementById('pregunta6');
+          }
+        }
+
+        var respuesta6 = document.querySelector('input[name="respuesta6"]:checked');
+        if (respuesta6) {
+          if (respuesta6.value === 'si') {
+            mostrarResumen('Influenza');
+            txtenfermedad.value = '2';
+          } else if (respuesta6.value === 'no') {
+            mostrarResumen('Gripe posiblemente leve');
+            txtenfermedad.value = '3';
+          }
+        }
+
+        var respuesta7 = document.querySelector('input[name="respuesta7"]:checked');
+        if (respuesta7) {
+          if (respuesta7.value === 'si') {
+            mostrarResumen('Probablemente necesita atención médica urgente');
+            txtenfermedad.value = '6';
+          } else if (respuesta7.value === 'no') {
+            mostrarResumen('Influenza posiblemente grave');
+            txtenfermedad.value = '2';
+          }
+        }
+
+        var respuesta8 = document.querySelector('input[name="respuesta8"]:checked');
+        if (respuesta8) {
+          if (respuesta8.value === 'si') {
+            siguientePregunta = document.getElementById('pregunta9');
+          } else if (respuesta8.value === 'no') {
+            mostrarResumen('Probablemente otro tipo de enfermedad, consulte a otro especialista');
+            txtenfermedad.value = '6';
+          }
+        }
+
+        var respuesta9 = document.querySelector('input[name="respuesta9"]:checked');
+        if (respuesta9) {
+          if (respuesta9.value === 'si') {
+            siguientePregunta = document.getElementById('pregunta10');
+          } else if (respuesta9.value === 'no') {
+            mostrarResumen('Probablemente covid-19 o Infección respiratoria');
+            txtenfermedad.value = '5';
+          }
+        }
+
+        var respuesta10 = document.querySelector('input[name="respuesta10"]:checked');
+        if (respuesta10) {
+          if (respuesta10.value === 'si') {
+            mostrarResumen('Probablemente gripe');
+            txtenfermedad.value = '3';
+          } else if (respuesta10.value === 'no') {
+            mostrarResumen('Probablemente resfriado común');
+            txtenfermedad.value = '4';
+          }
+        }
+
+
+        if (siguientePregunta) {
+          siguientePregunta.classList.remove('hidden');
+        }
+      }
+    }
+    // Función para mostrar el resumen de las selecciones
+    function mostrarResumen(mensaje) {
+        // Oculta todas las preguntas
+        var preguntas = document.getElementsByClassName('pregunta');
+        for (var i = 0; i < preguntas.length; i++) {
+          preguntas[i].classList.add('hidden');
+        }
+      var resumen = document.getElementById('resumen');
+      resumen.classList.remove('hidden');
+//sdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddasdasdaddaddas
+      txtpaciente.disabled = false;
+      //hacerlo hide el txt paciente
+
+      txtpaciente.classList.add('hidden');
+      boton.classList.remove('hidden');
+      
+
+
+      var mensajes = document.getElementById('mensajeee');
+        mensajes.classList.remove('hidden');
+        mensajes.textContent = mensaje;
+
+
+    }
+
+
+
+
+
+
+    $(document).ready(function() {
+        $('#txtpaciente').change(function() {
+            // Obtener la fecha de nacimiento del paciente seleccionado
+            var fechaNacimiento = $(this).find(':selected').data('fecha-nacimiento');
+
+            // Convertir la fecha de nacimiento a un objeto Date
+            var fechaNacimientoObj = new Date(fechaNacimiento);
+
+            // Calcular la edad del paciente
+            var hoy = new Date();
+            var edad = hoy.getFullYear() - fechaNacimientoObj.getFullYear();
+
+            // Verificar si el cumpleaños ya pasó este año
+            var cumpleaniosEsteAnio = hoy.getMonth() < fechaNacimientoObj.getMonth() || 
+                                      (hoy.getMonth() == fechaNacimientoObj.getMonth() && 
+                                       hoy.getDate() < fechaNacimientoObj.getDate());
+
+            // Restar 1 a la edad si el cumpleaños todavía no ha ocurrido este año
+            if (!cumpleaniosEsteAnio) {
+                edad--;
+            }
+
+            // Actualizar el H1 según la edad del paciente
+            var consultorioH1 = $('#consultorioH1');
+            if (edad < 18) {
+                pregunta1.classList.remove('hidden');
+                consultorioH1.text('Consultorio 1');
+                txtconsultorio.value = '1';
+            } else if (edad >= 18 && edad <= 45) {
+                pregunta1.classList.remove('hidden');
+                consultorioH1.text('Consultorio 2');
+                txtconsultorio.value = '2';
+            } else if (edad > 45){                
+                pregunta1.classList.remove('hidden');
+                consultorioH1.text('Consultorio 3');
+                txtconsultorio.value = '3';
+            }
+            else{
+                consultorioH1.text('No se puede determinar el consultorio');
+                pregunta1.classList.add('hidden');
+
+            }
+
+        });
+    });
+
+
+  </script>
+
+    </body>
+</html>
