@@ -1,3 +1,5 @@
+drop database SistemasMedicos;
+
 create database SistemasMedicos;
 
 use SistemasMedicos;
@@ -7,10 +9,9 @@ id int not null primary key auto_increment,
 especialidad varchar(100)
 );
 
-create table sintomas(
-id int not null primary key auto_increment,
-nom_sintoma varchar(100)
-);
+insert into especialidades(especialidad)
+values
+('Infectología');
 
 create table enfermedades(
 id int not null primary key auto_increment,
@@ -22,6 +23,12 @@ id int not null primary key auto_increment,
 nombre varchar(100)
 );
 
+insert into consultorios(nombre)
+values
+('Consultorio 1'),
+('Consultorio 2'),
+('Consultorio 3');
+
 create table pacientes(
 id int not null primary key auto_increment,
 nombre varchar(100),
@@ -30,6 +37,24 @@ am varchar(100),
 curp varchar(100),
 fecha_nac date
 );
+
+create table sintomas(
+id int not null primary key auto_increment,
+dificultadRespirar varchar(20),
+presionPecho varchar(20),
+perdidaGustoOlfato varchar(20),
+dolorPecho varchar(20),
+mareosConvulsiones varchar(20),
+fiebreAlta varchar(20),
+mareos2 varchar(20),
+tos varchar(20),
+dolorGarganta varchar(20),
+goteoNariz varchar(20),
+id_paciente int not null,
+foreign key (id_paciente) references pacientes (id)
+);
+
+
 
 create table medicos(
 id int not null primary key auto_increment,
@@ -40,6 +65,10 @@ id_especialidad int not null,
 cedula varchar(100),
 foreign key (id_especialidad) references especialidades (id) 
 );
+
+insert into medicos(nombre,ap,am,id_especialidad,cedula)
+values
+('José Alberto','Gómez','Utrera','1','JAGU2111');
 
 create table diagnosticos(
 id int not null primary key auto_increment,
@@ -61,3 +90,9 @@ foreign key (id_paciente) references pacientes (id),
 foreign key (id_diagnostico) references diagnosticos (id),
 foreign key (id_consultorio) references consultorios (id)
 );
+
+
+select * from especialidades;
+select * from consultorios;
+select * from pacientes;
+select * from medicos;
