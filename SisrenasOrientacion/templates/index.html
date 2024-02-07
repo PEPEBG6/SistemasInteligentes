@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Estudiantes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        header {
+            background-color: #4CAF50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #45a049;
+            color: white;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cargas Académicas Estudiantes</h1>
+    </header>
+
+    <!-- Formulario de búsqueda de estudiantes -->
+    <form method="POST" action="/" style="max-width: 300px; margin: 10px auto;">
+        <label for="student_id" style="margin-right: 5px;">Buscar Matrícula:</label>
+        <input type="text" id="student_id" name="student_id" placeholder="Ingrese matrícula" style="padding: 5px;">
+        <button type="submit" style="padding: 5px;">Buscar</button>
+    </form>
+    
+    <!-- Tabla de información del estudiante -->
+    <h2>Información del Estudiante</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if listalum %}
+                <tr>
+                    <td>{{ listalum[0][0] }}</td>
+                    <td>{{ listalum[0][1] }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Tabla de cargas académicas -->
+    <h2>Carga Académica</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Parcial 1</th>
+                <th>Parcial 2</th>
+                <th>Parcial 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for carga in listalum %}
+                <tr>
+                    <td>{{ carga[2] }}</td>
+                    <td>{{ carga[3] }}</td> 
+                    <td>{{ carga[4] }}</td> 
+                    <td>{{ carga[5] }}</td>
+                </tr>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+
+    <h2>Estado del Alumno</h2>
+    {% if estado_alumno %}
+        <p>{{ estado_alumno }}</p>
+    {% endif %}
+
+
+
+
+</body>
+</html>
