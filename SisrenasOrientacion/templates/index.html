@@ -108,6 +108,7 @@
                 <th>Parcial 1</th>
                 <th>Parcial 2</th>
                 <th>Parcial 3</th>
+                <th>% de Aprobación</th>
             </tr>
         </thead>
         <tbody>
@@ -117,17 +118,20 @@
                     <td>{{ carga[3] }}</td> 
                     <td>{{ carga[4] }}</td> 
                     <td>{{ carga[5] }}</td>
+                    <td>{{ '%.2f' % carga[6] }}%</td>
+                    
                 </tr>
                 
             {% endfor %}
         </tbody>
     </table>
+    
 
     
 
-    <h2>Estado del Alumno</h2>
-    {% if estado_alumno %}
-        <p>{{ estado_alumno }}</p>
+    <h2>Probabilidad de estar en Baja Académica</h2>
+    {% if probabilidad_baja_academica is defined %}
+        <p>La probabilidad de estar en baja académica es: {{ '%.2f' % (probabilidad_baja_academica * 100) }}%</p>
     {% endif %}
 
 

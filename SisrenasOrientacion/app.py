@@ -13,6 +13,28 @@ app.secret_key= 'mysecrety'
 mysql= MySQL(app)
 
 
+def calcular_estado_alumno(conalum):
+    materias_con_porcentaje = []
+    
+    for carga in conalum:
+        # Calcular el porcentaje de calificaciones por encima de 7.00 para cada parcial
+        calificaciones = carga[3:6]
+        calificaciones_aprobadas = [calificacion for calificacion in calificaciones if calificacion >= 7.0]
+        porcentaje_aprobacion = (len(calificaciones_aprobadas) / len(calificaciones)) * 100
+        carga_con_porcentaje = carga + (porcentaje_aprobacion,) 
+        materias_con_porcentaje.append(carga_con_porcentaje)
+    
+    # Contar el número de materias aprobadas
+    num_materias_aprobadas = sum(1 for carga in materias_con_porcentaje if carga[-1] >= 70)  
+    num_materias_totales = len(materias_con_porcentaje)
+    
+    # Calcular la probabilidad de estar en baja académica
+    probabilidad_baja_academica = (num_materias_totales - num_materias_aprobadas) / num_materias_totales
+    
+    return materias_con_porcentaje, probabilidad_baja_academica
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -31,52 +53,13 @@ def index():
                       GROUP BY e.id, e.nombre, m.materia''', (matricula,))
         conalum = CC.fetchall()
         
-        # Calcular el estado del alumno
-        estado_alumno = calcular_estado_alumno(conalum)
+        # Calcular el estado del alumno y el porcentaje de poder aprobar
+        conalum, probabilidad_baja_academica = calcular_estado_alumno(conalum)
         
-        return render_template('index.html', listalum=conalum, estado_alumno=estado_alumno)
+        return render_template('index.html', listalum=conalum, probabilidad_baja_academica=probabilidad_baja_academica)
     else:
         return render_template('index.html')
     
-
-def calcular_estado_alumno(conalum):
-    # Obtener las calificaciones de los parciales
-    calificaciones = [carga[3:6] for carga in conalum]
-    # Lista para almacenar el estado de aprobación de cada materia
-    materias_aprobadas = []
-    
-    for carga in calificaciones:
-        # Verificar si todas las calificaciones son mayores o iguales a 7.0 en cada materia
-        aprobada = all(calificacion >= 7.0 for calificacion in carga)
-        materias_aprobadas.append(aprobada)
-    
-    # Contar el número de materias aprobadas
-    num_materias_aprobadas = sum(materias_aprobadas)
-    num_materias_totales = len(materias_aprobadas)
-    
-    # Verificar si el alumno tiene menos de la mitad de materias aprobadas y alguna calificación menor a 7.0
-    if num_materias_aprobadas < num_materias_totales / 2 and any(any(calificacion < 7.0 for calificacion in carga) for carga in calificaciones):
-        return "Baja Académica"
-    # Verificar si todas las calificaciones son mayores o iguales a 7.0
-    elif all(all(calificacion >= 7.0 for calificacion in carga) for carga in calificaciones):
-        return "Exento"
-    # Verificar si al menos una calificación es mayor o igual a 7.0 y las otras dos son menores a 7.0
-    elif any(any(calificacion >= 7.0 for calificacion in carga) for carga in calificaciones):
-        # Contar la cantidad de parciales aprobados
-        aprobados = sum(any(calificacion >= 7.0 for calificacion in carga) for carga in calificaciones)
-        # Verificar si el alumno puede realizar finales
-        if aprobados < 3:
-            return "Tendrá Finales"
-        else:
-            return "Baja Academica"
-    else:
-        return "Indefinido"
-
-
-
-
-
-
 
 
 #Ejecucion del servidor en el puerto 5000
