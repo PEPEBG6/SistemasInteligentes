@@ -3,29 +3,22 @@ import re
 import pandas as pd
 from deep_translator import GoogleTranslator
 import nltk
-"""import ssl
 
-try:
-    _create_unverified_https_context=ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context=_create_unverified_https_context""" 
-#nltk.download()
+# nltk.download()  # Esto ya está comentado, así que no es necesario descomentarlo.
+
 from nltk.tokenize import word_tokenize
 from nltk import pos_tag
-#nltk.download('stopwords')
 from nltk.corpus import stopwords
-#nltk.download('wordnet')
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from textblob import TextBlob
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from nltk.corpus import sentiwordnet as swn
+# from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer  # Eliminado
+# from nltk.corpus import sentiwordnet as swn  # Eliminado
 import matplotlib.pyplot as plt
+
 #Paso 1: Limpiar y traducción del texto
 #Cargamos el archivo con los comentarios
-data = pd.read_csv('Análisis de Sentimientos o Minería de Opiniones/Ejercicio1/comentarios.csv', delimiter=",")
+data = pd.read_csv('Análisis de Sentimientos o Minería de Opiniones/Ejercicio2/comentarios.csv', delimiter=",")
 data.head()
 #Eliminamos la columna unnamed:1
 mydata=data.drop('Unnamed: 1',axis=1)
@@ -121,87 +114,5 @@ print(tb_counts)
 #Graficamos los resultados
 plt.title("Resultados TextBlob")
 plt.figure(figsize=(10,7))
-plt.pie(tb_counts.values, labels=tb_counts.index, explode=(0.1,0,0), autopct='%1.1f%%', shadow=False)
-plt.show()
-
-#Segunda libreria: VADER
-#Este algoritmo de Sentimiento con VADER (Valance Aware Dictionary y Sentiment Reasomer)
-#Este algoritmo aparte de conocer si es positivo, negativo o neutro tambien nos obtiene la intensidad de la emocion
-#La suma de las intensidades de positivo, negativo y neutro nos dara 1
-#El compuesto varia de -1 a 1, y es la metrica visualizada para dibujar el sentimiento
-#Regla es positivo si compuesto >=0.5, neutro si esta en -0.5 < compuesto <0.5, negativo si -0.5 >= compuesto
-
-analyzer=SentimentIntensityAnalyzer()
-#Funcion para calcularlos sentimientos con VADER
-def vadersentimentanalysis(comentario):
-    vs=analyzer.polarity_scores(comentario)
-    return vs['compound']
-fin_data['Vader_Sentiment']=fin_data['Lemma'].apply(vadersentimentanalysis)
-
-def vader_analysis(compound):
-    if compound >=0.5:
-        return 'Positivo'
-    elif compound <=-0.5:
-        return 'Negativo'
-    else:
-        return 'Neutro'
-fin_data['Vader_Analysis']=fin_data['Vader_Sentiment'].apply(vader_analysis)
-fin_data.head()
-print(fin_data)
-
-#plt.tittle("Resultados VADER")
-vader_counts=fin_data['Vader_Analysis'].value_counts()
-print(vader_counts)
-
-#Graficamos los resultados
-plt.title("Resultados Vader")
-plt.figure(figsize=(10,7))
-plt.pie(vader_counts, labels=vader_counts.index, explode=(0.1,0,0), autopct='%1.1f%%', shadow=False)
-plt.show()
-
-#Tercer librería: SentiWordNet
-#Para esta libreria es importante obtener el POS, Lemma de cada palabra
-#Si la puntuacion positiva > puntuacion negatica, el sentimiento es positivo
-#Si la puntuacion positiva < puntuacion negativa, el sentimiento es negativo
-#Si la puntuacion positiva = puntuacion negatica, el sentimiento es neutro
-
-#Generamos la funcion para analizar los sentimeintos
-def sentiwordnetanalysis(pos_data):
-    sentiment=0
-    tokens_count=0
-    for word, pos in pos_data:
-        if not pos:
-                continue
-        lemma=wordnet_lemmatizer.lemmatize(word, pos=pos)
-        if not lemma:
-                continue
-        synsets=wordnet.synsets(lemma, pos=pos)
-        if not synsets:
-                continue
-        synset=synsets[0]
-        swn_synset=swn.senti_synset(synset.name())
-        sentiment += swn_synset.pos_score() - swn_synset.neg_score()
-        tokens_count += 1
-        print(swn_synset.pos_score(),swn_synset.neg_score(),swn_synset.obj_score())
-    if not tokens_count:
-         return 0
-    if sentiment > 0:
-         return 'Positivo'
-    if sentiment == 0:
-         return 'Neutral'
-    else:
-         return 'Negativo'
-fin_data['SWN_Analysis']=mydata['POS_tagged'].apply(sentiwordnetanalysis)
-print(fin_data['SWN_Analysis'])
-fin_data.head()
-print(fin_data)
-
-#plt.tittle("Resultados SentiWordNet")
-swn_counts=fin_data['SWN_Analysis'].value_counts()
-print(swn_counts)
-
-#Graficamos los resultados
-plt.title("Resultados SentiWordNet")
-plt.figure(figsize=(10,7))
-plt.pie(swn_counts, labels=swn_counts.index, explode=(0.1,0,0), autopct='%1.1f%%', shadow=False)
+plt.pie(tb_counts.values, labels=tb_counts.index, explode=[0.1] * len(tb_counts), autopct='%1.1f%%', shadow=False)
 plt.show()
